@@ -196,11 +196,27 @@
 
 </style>
 
+<style>
+    .notification-dialog button {
+  margin-right: 10px; /* Add some spacing between buttons */
+    }
+  .notification-input{
+  margin-bottom: 15px;
+  padding: 10px;
+  width : 90%;
+  border-radius: 8px;
+}
+
+
+
+</style>
+
 
 
   </head>
   <body>
-    <img class="logo" src=https://i.imgur.com/5AFJXdb.jpg alt="My Website Logo">
+    <img class="logo" src=https://i.imgur.com/THzotXQ.jpg alt="My Website Logo">
+    <!--img class="logo" src=https://i.imgur.com/5AFJXdb.jpg alt="My Website Logo"-->
     <div class="container2">
        
       <!--img src="path/to/image1.jpg" alt="Image 1" class="image-button"-->
@@ -214,7 +230,7 @@
       </span>
       <span onclick="showNotification()" class="image-text image-button" >
         <img src="https://i.imgur.com/xmWBlPz.png" alt="Image" width="80" height="80"><br>
-        <span class="text image-button" >Appoinments</span>
+        <span class="text image-button" >NOTES</span>
         
       </span>
 
@@ -225,6 +241,7 @@
         const button = document.getElementById('my-button');
     
         button.addEventListener('click', function() {
+            if (confirm("Are you sure you want to continue?")) {
           const now = new Date();
           const dayOfWeek = now.getDay();
           const hourOfDay = now.getHours();
@@ -247,8 +264,8 @@
           let dateString = year + '-' + month + '-' + day;
 
             // Print the current time and date
-            console.log('Current time: ' + timeString);
-            console.log('Current date: ' + dateString);
+            //console.log('Current time: ' + timeString);
+            //console.log('Current date: ' + dateString);
 
             // Create a new Date object for the desired date
           let myDate = new Date('2023-04-14');
@@ -257,13 +274,13 @@
           let dayName = myDate.toLocaleDateString('en-US', { weekday: 'long' });
 
           // Print the day name
-          console.log(dayName);
+         // console.log(dayName);
 
 
     
           if (dayOfWeek === 6 || (dayOfWeek === 5 && hourOfDay >= 20)) {
             // Do something if it's Saturday or after Friday at 8:00 pm https://hoes.tube/search/sexmex/
-            console.log('It\'s Saturday or after Friday at 8:00 pm!');
+            //console.log('It\'s Saturday or after Friday at 8:00 pm!');
 
             database.ref("num").remove()
             database.ref("Books").remove() 
@@ -353,13 +370,15 @@
             database.ref("num/82/res").set("5:45 PM                                                          (82)")
             database.ref("num/83/res").set("5:50 PM                                                          (83)")
             database.ref("num/84/res").set("5:55 PM                                                          (84)")
-            showNotification();
+            alert("Database Reset Successful!" )
+            //alert(<p>Number of records added: <span id="recordCount"></span></p>)
+            // showNotification();
 
 
 
           } else {
             // Do something else if it's any other day or time
-            console.log('It\'s not Saturday or after Friday at 8:00 pm.');
+           // console.log('It\'s not Saturday or after Friday at 8:00 pm.');
             
             database.ref("num").remove()
             database.ref("Books").remove() 
@@ -410,17 +429,26 @@
             database.ref("num/43/res").set("07:45 PM                                                          (43)")
             database.ref("num/44/res").set("07:50 PM                                                          (44)")
             database.ref("num/45/res").set("07:55 PM                                                          (45)")
-            showNotification();
+           alert("Database Reset Successful!" )//<span id="recordCount"></span>)
+            //showNotification();
 
           }
+        }else {
+            // Alert user that the action was canceled
+            alert("Action canceled.");
+            }
         });
       </script>
 
 <div id="notificationContainer" class="notification-container" style="display:none;">
   <div class="notification-dialog">
-    <h2>Database Update Complete</h2>
-    <p>Number of records added: <span id="recordCount"></span></p>
-    <button onclick="hideNotification()">Close</button>
+    <h2>Special Notes</h2>
+    <!--p>Number of records added: <span id="recordCount"></span></p-->
+    <!--label for="inputText">Type your note here:</label-->
+    <input type="text" id="inputText" name="inputText" placeholder="Type your note here!" class="notification-input">
+    <br>
+    <button onclick="saveInput()">Save</button>
+    <button onclick="hideNotification()">Cancel</button>
   </div>
 </div>
 
@@ -441,7 +469,61 @@
       }
     </script>
 
-<!--img src="path/to/image1.jpg" alt="Image 1" class="image-button"-->
+    <!--img src="path/to/image1.jpg" alt="Image 1" class="image-button"-->
+
+    <script>
+        /*------
+        function saveInput() {
+        // Get the input element
+        const inputText = document.getElementById("inputText");
+
+        // Get the entered text
+        const enteredText = inputText.value;
+
+            database.ref("num/01/res").set(enteredText + "   (01)")
+            database.ref("num/02/res").set(enteredText + "   (02)")
+            database.ref("num/03/res").set(enteredText + "   (03)")
+            database.ref("num/04/res").set(enteredText + "   (04)")
+            
+            var notificationContainer = document.getElementById("notificationContainer");
+            notificationContainer.style.display = "none";
+        // Log the entered text to the console
+        //console.log("Entered text:", enteredText);
+
+        // You can replace the above line with your actual saving logic,
+        // such as making an AJAX request to save the data to your server.
+        }
+    -------------*/
+    function saveInput() {
+  // Get the input element and entered text
+  const inputText = document.getElementById("inputText");
+  const enteredText = inputText.value.trim(); // Trim leading/trailing whitespace
+
+  // Validate input: Check if empty or contains only whitespace
+  if (!enteredText) {
+    // Display notification if empty
+    const notificationContainer = document.getElementById("notificationContainer");
+    notificationContainer.style.display = "block"; // Show notification
+
+    // Optional: Set a timeout to hide the notification automatically
+    setTimeout(() => {
+      notificationContainer.style.display = "none";
+    }, 3000); // Hide after 3 seconds
+
+    return; // Exit function if empty
+  }
+
+  // Perform saving logic (replace with your specific implementation)
+  database.ref("num/01/res").set(enteredText + " (01)");
+  database.ref("num/02/res").set(enteredText + " (02)");
+  database.ref("num/03/res").set(enteredText + " (03)");
+  database.ref("num/04/res").set(enteredText + " (04)");
+
+  // Hide notification after successful saving (optional)
+  notificationContainer.style.display = "none";
+}
+
+    </script>
 
 <div class="container1">
 	<!-- Create a div to hold the RecyclerView -->
